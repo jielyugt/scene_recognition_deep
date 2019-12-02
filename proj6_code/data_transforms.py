@@ -29,10 +29,12 @@ def get_fundamental_transforms(inp_size: Tuple[int, int],
   #############################################################################
 
   fundamental_transforms= transforms.Compose([ 
+      transforms.RandomHorizontalFlip(),
+      transforms.ColorJitter(),
       transforms.Resize(inp_size),
       transforms.ToTensor(),
       transforms.Normalize(pixel_mean, pixel_std)
-      ])
+  ])
 
   #############################################################################
   # Student code end
@@ -61,10 +63,11 @@ def get_data_augmentation_transforms(inp_size: Tuple[int, int],
   # Student code begin
   #############################################################################
 
-  raise NotImplementedError('get_data_augmentation_transforms not implemented')
-  # Add data augmentation transforms here
-
-  # Copy over fundamental transforms here
+  aug_transforms= transforms.Compose([ 
+      transforms.Resize(inp_size),
+      transforms.ToTensor(),
+      transforms.Normalize(pixel_mean, pixel_std)
+  ])
 
   #############################################################################
   # Student code end

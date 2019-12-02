@@ -20,7 +20,23 @@ class SimpleNetDropout(nn.Module):
     # Student code begin
     ###########################################################################
 
-    raise NotImplementedError('__init__ not implemented')
+    self.cnn_layers = nn.Sequential(   
+        nn.Conv2d(1, 10, kernel_size=(5,5)),
+        nn.MaxPool2d(3,3),
+        nn.ReLU(),
+        nn.Conv2d(10, 20, kernel_size=(5,5)),
+        nn.MaxPool2d(3,3),
+        nn.ReLU()
+    )
+
+    self.fc_layers = nn.Sequential(
+        nn.Dropout(),
+        nn.Linear(500,100),
+        nn.ReLU(),
+        nn.Linear(100,15)
+    )
+
+    self.loss_criterion = nn.CrossEntropyLoss(reduction='sum')
 
     ###########################################################################
     # Student code end
@@ -40,7 +56,9 @@ class SimpleNetDropout(nn.Module):
     # Student code begin
     ###########################################################################
 
-    raise NotImplementedError('forward not implemented')
+    x = self.cnn_layers(x)
+    x = x.view(x.shape[0], -1)
+    model_output = self.fc_layers(x)
 
     ###########################################################################
     # Student code end

@@ -32,7 +32,30 @@ class MyAlexNet(nn.Module):
 
     # take care to turn off gradients for both weight and bias
 
-    raise NotImplementedError('__init__ not implemented')
+    layers = list(alexnet(pretrained=True).children())
+    self.cnn_layers = layers[0]
+    self.avgpool = layers[1]
+
+    self.fc_layers = nn.Sequential(
+        nn.Dropout(p=0.5, inplace=False),
+        nn.Linear(9216, 4096, bias=True),
+        nn.ReLU(inplace=True),
+        nn.Dropout(p=0.5, inplace=False),
+        nn.Linear(in_features=4096, out_features=4096, bias=True),
+        nn.ReLU(inplace=True),
+        nn.Linear(4096, 15, bias=True),
+    )
+
+    # fine-tuning
+    for i in [0, 3, 6, 8, 10]:
+        self.cnn_layers[i].weight.requires_grad = False
+        self.cnn_layers[i].bias.requires_grad = False
+    
+    for i in [1, 4]:
+        self.fc_layers[i].weight.requires_grad = False
+        self.fc_layers[i].bias.requires_grad = False
+
+    self.loss_criterion = nn.CrossEntropyLoss(reduction='sum')
 
     ###########################################################################
     # Student code end
@@ -55,7 +78,10 @@ class MyAlexNet(nn.Module):
     # Student code begin
     ###########################################################################
 
-    raise NotImplementedError('forward not implemented')
+    x = self.cnn_layers(x)
+    x = self.avgpool(x)
+    x = x.view(x.shape[0], -1)
+    model_output = self.fc_layers(x)
 
     ###########################################################################
     # Student code end
