@@ -37,12 +37,7 @@ class MyAlexNet(nn.Module):
     self.avgpool = layers[1]
 
     self.fc_layers = nn.Sequential(
-        nn.Dropout(p=0.5, inplace=False),
-        nn.Linear(9216, 4096, bias=True),
-        nn.ReLU(inplace=True),
-        nn.Dropout(p=0.5, inplace=False),
-        nn.Linear(in_features=4096, out_features=4096, bias=True),
-        nn.ReLU(inplace=True),
+        *layers[2][:-1],
         nn.Linear(4096, 15, bias=True),
     )
 

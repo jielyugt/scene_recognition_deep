@@ -32,6 +32,7 @@ class SimpleNetDropout(nn.Module):
     self.fc_layers = nn.Sequential(
         nn.Dropout(),
         nn.Linear(500,100),
+        # nn. BatchNorm1d(100),       # extra credit
         nn.ReLU(),
         nn.Linear(100,15)
     )
