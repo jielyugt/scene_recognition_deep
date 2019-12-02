@@ -30,7 +30,10 @@ def get_optimizer(model: torch.nn.Module, config: dict) -> torch.optim.Optimizer
   # Student code begin
   ############################################################################
 
-  raise NotImplementedError('get_optimizer not implemented')
+  if optimizer_type == 'sgd':
+    optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
+  else:
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
 
   ############################################################################
   # Student code end

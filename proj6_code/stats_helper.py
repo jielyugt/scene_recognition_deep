@@ -28,10 +28,24 @@ def compute_mean_and_std(dir_name: str) -> (np.array, np.array):
   ############################################################################
   # Student code begin
   ############################################################################
-
-  raise NotImplementedError('compute_mean_and_std not implemented')
+  img_path = []
+  for purpose in glob.glob(dir_name + "/*"):
+      for category in glob.glob(purpose + "/*"):
+          for img in glob.glob(category + "/*"):
+              img_path.append(img)
+  scaler = StandardScaler()
+  for img in img_path:
+      image = Image.open(img).convert("L")
+      arr = np.asarray(image)
+      arr = arr/255
+      arr = arr.reshape(-1,1)
+      scaler.partial_fit(arr)
+    
+  mean = scaler.mean_
+  std = scaler.scale_
 
   ############################################################################
   # Student code end
   ############################################################################
   return mean, std
+

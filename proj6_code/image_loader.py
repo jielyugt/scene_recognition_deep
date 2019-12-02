@@ -61,7 +61,9 @@ class ImageLoader(data.Dataset):
     # Student code begin
     ###########################################################################
 
-    raise NotImplementedError('load_imagepaths_with_labels not implemented')
+    for clas in class_labels:
+        for img in glob.glob("../" + self.curr_folder + "/" + clas + "/*"):
+            img_paths.append((img, class_labels[clas]))
 
     ###########################################################################
     # Student code end
@@ -80,8 +82,9 @@ class ImageLoader(data.Dataset):
     ###########################################################################
     # Student code begin
     ###########################################################################
-
-    raise NotImplementedError('get_classes not implemented')
+    
+    for idx, clas in enumerate(glob.glob("../" + self.curr_folder + "/*")):
+        classes[clas.split("/")[-1]] = idx
 
     ###########################################################################
     # Student code end
@@ -105,8 +108,10 @@ class ImageLoader(data.Dataset):
     ###########################################################################
     # Student code begin
     ###########################################################################
-
-    raise NotImplementedError('load_img_from_path not implemented')
+    try:
+        img = Image.open("../" + path).convert("L")
+    except:
+        img = Image.open(path).convert("L")
 
     ###########################################################################
     # Student code end
@@ -136,8 +141,9 @@ class ImageLoader(data.Dataset):
     ###########################################################################
     # Student code start
     ############################################################################
-
-    raise NotImplementedError('__getitem__ not implemented')
+    img_path, class_idx = self.dataset[index]
+    img = self.load_img_from_path(img_path)
+    img = self.transform(img)
 
     ############################################################################
     # Student code end
@@ -158,7 +164,7 @@ class ImageLoader(data.Dataset):
     # Student code start
     ############################################################################
 
-    raise NotImplementedError('__len__ not implemented')
+    l = len(self.dataset)
 
     ############################################################################
     # Student code end
