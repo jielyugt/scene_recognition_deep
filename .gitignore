@@ -1,1 +1,4 @@
 4676_Fall2019_Proj6.egg-info/
+.ipynb_checkpoints/
+__pycache__/
+../proj6_unit_tests/__pycache__/
